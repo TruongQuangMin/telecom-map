@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ORS API Test</title>
+</head>
+<body>
+  <h1>Test OpenRouteService API</h1>
+  <pre id="output">Đang gọi API...</pre>
+
+  <script>
+    const API_KEY = "5b3ce3597851110001cf6248b325eccab80b40b19afa714f5f325aff"; // 🔥 Dán API key bạn vừa lấy vào đây
+
+    const from = [105.804817, 21.028511]; // Hà Nội [lng, lat]
+    const to = [105.48264846430982, 9.795767696595519];   // Hải Phòng [lng, lat]
+
+    fetch('https://api.openrouteservice.org/v2/directions/driving-car/json', {
+      method: 'POST',
+      headers: {
+        'Authorization': API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        coordinates: [from, to]
+      })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(data => { 
+      const summary = data.routes[0].summary;
+      document.getElementById('output').textContent =
+        `✅ Khoảng cách: ${(summary.distance / 1000).toFixed(2)} km\n` +
+        `⏱️ Thời gian: ${(summary.duration / 60).toFixed(1)} phút`;
+    })
+    .catch(err => {
+      document.getElementById('output').textContent = `❌ Lỗi: ${err.message}`;
+      console.error(err);
+    });
+  </script>
+</body>
+</html>

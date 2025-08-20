@@ -1,0 +1,43 @@
+// addConnections.js
+import { addDoc, collection, GeoPoint } from "firebase/firestore";
+import { db } from "./firebaseConfig.js";
+
+const connections = [
+  {
+    from: "Trạm viễn thông VTH001",
+    to: "Trạm viễn thông VTH015",
+    coordinates: [
+      new GeoPoint(9.782903091737197, 105.46711335097967), 
+      new GeoPoint(9.72491585933868, 105.45835036266533), 
+    ],
+  },
+  {
+    from: "Trạm viễn thông VTH015",
+    to: "Trạm viễn thông VTT001",
+    coordinates: [
+      new GeoPoint(9.72491585933868, 105.45835036266533), 
+      new GeoPoint(9.70229437488824, 105.48009732827472), 
+    ],
+  },
+  {
+    from: "Trạm viễn thông VTY001",
+    to: "Trạm viễn thông VTH001",
+    coordinates: [
+      new GeoPoint(9.740882530233975, 105.52870452279672), 
+      new GeoPoint(9.782903091737197, 105.46711335097967),  
+    ],
+  },
+];
+
+async function uploadConnections() {
+  for (const conn of connections) {
+    try {
+      await addDoc(collection(db, "connections"), conn);
+      console.log(`✅ Đã thêm tuyến từ ${conn.from} đến ${conn.to}`);
+    } catch (error) {
+      console.error(`❌ Lỗi khi thêm tuyến từ ${conn.from}:`, error);
+    }
+  }
+}
+
+uploadConnections();

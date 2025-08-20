@@ -1,0 +1,5 @@
+https://gadm.org/download_country.html             : khoanh vùng địa lý
+
+npm install @turf/turf                             : kiểm tra điểm có nằm ngoài khoanh vùng hay không
+
+
